@@ -107,7 +107,7 @@ export default new Vuex.Store({
       localStorage.removeItem("userId");
       router.replace("/signin");
     },
-    storeUser({ commit, state }, userData) {
+    storeUser({ state }, userData) {
       if (!state.idToken) {
         return;
       }
@@ -140,6 +140,9 @@ export default new Vuex.Store({
   getters: {
     user(state) {
       return state.user;
+    },
+    tokenize(state) {
+      return state.idToken;
     },
     isAuthenicated(state) {
       return state.idToken !== null;

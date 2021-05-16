@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 import App from "./App.vue";
 import axios from "axios";
 
@@ -21,6 +22,9 @@ const resInterceptor = axios.interceptors.response.use((res) => {
 
 axios.interceptors.request.eject(reqInterceptor);
 axios.interceptors.response.eject(resInterceptor);
+
+Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
 
 new Vue({
   el: "#app",

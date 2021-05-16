@@ -1,8 +1,11 @@
 <template>
   <div id="dashboard">
-    <h1>That's the dashboard!</h1>
-    <p>You should only get here if you're authenticated!</p>
-    <p v-if="email">Your email address: {{ email }}</p>
+    <div class="row">
+      <div class="col-xs-12">
+        <p>{{ email }}</p>
+        <p>okay</p>
+      </div>
+    </div>
   </div>
 </template>
 

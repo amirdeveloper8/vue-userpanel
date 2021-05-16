@@ -4,11 +4,23 @@
       <form @submit.prevent="onSubmit">
         <div class="input">
           <label for="email">Mail</label>
-          <input type="email" id="email" v-model="email" />
+          <input
+            class="form-control"
+            type="email"
+            id="email"
+            v-model="email"
+            required
+          />
         </div>
         <div class="input">
           <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" />
+          <input
+            class="form-control"
+            type="password"
+            id="password"
+            v-model="password"
+            required
+          />
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
@@ -49,6 +61,7 @@ export default {
   border: 1px solid #eee;
   padding: 20px;
   box-shadow: 0 2px 3px #ccc;
+  background: #3e3e3e;
 }
 
 .input {
@@ -57,7 +70,7 @@ export default {
 
 .input label {
   display: block;
-  color: #4e4e4e;
+  color: white;
   margin-bottom: 6px;
 }
 
@@ -66,13 +79,26 @@ export default {
   width: 100%;
   padding: 6px 12px;
   box-sizing: border-box;
-  border: 1px solid #ccc;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
+  color: white;
 }
 
 .input input:focus {
   outline: none;
   border: 1px solid #521751;
-  background-color: #eee;
+  background-color: transparent;
+}
+
+.input input:active {
+  outline: none;
+  border: 1px solid #521751;
+  background-color: transparent;
+}
+
+.input input:valid {
+  background: transparent;
 }
 
 .submit button {

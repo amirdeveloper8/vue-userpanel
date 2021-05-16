@@ -4,6 +4,8 @@ import store from "./store";
 
 import WelcomePage from "./components/welcome/welcome.vue";
 import DashboardPage from "./components/dashboard/dashboard.vue";
+import DashboardEdit from "./components/dashboard/dashboardEdit.vue";
+import dashboardHome from "./components/dashboard/dashboardHome.vue";
 import SignupPage from "./components/auth/signup.vue";
 import SigninPage from "./components/auth/signin.vue";
 
@@ -24,6 +26,8 @@ const routes = [
       }
     },
   },
+  { path: "/dashboard-home", component: dashboardHome },
+  { path: "/dashboard-edit", component: DashboardEdit },
 ];
 
 export default new VueRouter({ mode: "history", routes });

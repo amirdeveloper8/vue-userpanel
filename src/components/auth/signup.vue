@@ -3,26 +3,53 @@
     <div class="signup-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
-          <label for="email">Mail</label>
-          <input type="email" id="email" v-model="email" />
+          <label for="email">شماره تماس</label>
+          <input type="email" id="email" v-model="email" @blur="validateUser" />
+          <p class="error text-right py-2" v-if="userVal === 'invalid'">
+            شماره تماس خود را وارد کنید
+          </p>
         </div>
         <div class="input">
-          <label for="age">Your Age</label>
-          <input type="number" id="age" v-model.number="age" />
+          <label for="password">رمز عبور</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            @blur="validatePass"
+          />
+          <p class="error text-right py-2" v-if="passVal === 'invalid'">
+            رمز عبور خود را وارد کنید
+          </p>
         </div>
         <div class="input">
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" />
-        </div>
-        <div class="input">
-          <label for="confirm-password">Confirm Password</label>
+          <label for="confirm-password">تایید رمز عبور</label>
           <input
             type="password"
             id="confirm-password"
             v-model="confirmPassword"
+            @blur="validateConfPass"
           />
+          <div
+            class="d-flex justify-content-start align-items-center py-2"
+            style="direction:rtl"
+          >
+            <i
+              v-if="password === confirmPassword && confirmPassword !== ''"
+              class="far fa-check-circle"
+            ></i>
+            <i
+              v-if="password !== confirmPassword"
+              class="far fa-times-circle"
+            ></i>
+            <p
+              class="error text-right m-0 px-2"
+              v-if="confPassVal === 'invalid'"
+            >
+              رمز عبور خود را تایید کنید
+            </p>
+          </div>
         </div>
-        <div class="input">
+        <!-- <div class="input">
           <label for="country">Country</label>
           <select id="country" v-model="country">
             <option value="usa">USA</option>
@@ -30,8 +57,8 @@
             <option value="uk">UK</option>
             <option value="germany">Germany</option>
           </select>
-        </div>
-        <div class="hobbies">
+        </div> -->
+        <!-- <div class="hobbies">
           <h3>Add some Hobbies</h3>
           <button @click="onAddHobby" type="button">Add Hobby</button>
           <div class="hobby-list">
@@ -51,13 +78,13 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="input inline">
+          <label for="terms" class="px-2">با قوانین موافقم</label>
           <input type="checkbox" id="terms" v-model="terms" />
-          <label for="terms">Accept Terms of Use</label>
         </div>
         <div class="submit">
-          <button type="submit">Submit</button>
+          <button type="submit" :disabled="!terms">ثبت</button>
         </div>
       </form>
     </div>
@@ -69,37 +96,63 @@ export default {
   data() {
     return {
       email: "",
-      age: null,
       password: "",
       confirmPassword: "",
-      country: "usa",
-      hobbyInputs: [],
       terms: false,
+      userVal: "",
+      passVal: "",
+      confPassVal: "",
     };
   },
   methods: {
-    onAddHobby() {
-      const newHobby = {
-        id: Math.random() * Math.random() * 1000,
-        value: "",
-      };
-      this.hobbyInputs.push(newHobby);
-    },
-    onDeleteHobby(id) {
-      this.hobbyInputs = this.hobbyInputs.filter((hobby) => hobby.id !== id);
-    },
+    // onAddHobby() {
+    //   const newHobby = {
+    //     id: Math.random() * Math.random() * 1000,
+    //     value: "",
+    //   };
+    //   this.hobbyInputs.push(newHobby);
+    // },
+    // onDeleteHobby(id) {
+    //   this.hobbyInputs = this.hobbyInputs.filter((hobby) => hobby.id !== id);
+    // },
     onSubmit() {
-      const formData = {
-        email: this.email,
-        age: this.age,
-        password: this.password,
-        confirmPassword: this.confirmPassword,
-        country: this.country,
-        hobbies: this.hobbyInputs.map((hobby) => hobby.value),
-        terms: this.terms,
-      };
-      console.log(formData);
-      this.$store.dispatch("signup", formData);
+      if (this.email === "") {
+        this.userVal = "invalid";
+      } else if (this.passVal === "") {
+        this.passVal = "invalid";
+      } else if (this.confPassVal === "") {
+        this.confPassVal = "invalid";
+      } else {
+        const formData = {
+          email: this.email,
+          password: this.password,
+          confirmPassword: this.confirmPassword,
+          terms: this.terms,
+        };
+        console.log(formData);
+        this.$store.dispatch("signup", formData);
+      }
+    },
+    validateUser() {
+      if (this.email === "") {
+        this.userVal = "invalid";
+      } else {
+        this.userVal = "valid";
+      }
+    },
+    validatePass() {
+      if (this.password === "") {
+        this.passVal = "invalid";
+      } else {
+        this.passVal = "valid";
+      }
+    },
+    validateConfPass() {
+      if (this.confirmPassword === "") {
+        this.confPassVal = "invalid";
+      } else {
+        this.confPassVal = "valid";
+      }
     },
   },
   created() {
@@ -109,22 +162,39 @@ export default {
 </script>
 
 <style scoped>
+* {
+  text-align: right;
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
+  color: white;
+}
+
 .signup-form {
   width: 400px;
   margin: 30px auto;
   border: 1px solid #eee;
   padding: 20px;
   box-shadow: 0 2px 3px #ccc;
+  background: #3e3e3e;
 }
 
 .input {
   margin: 10px auto;
+  position: relative;
 }
 
 .input label {
   display: block;
-  color: #4e4e4e;
   margin-bottom: 6px;
+  text-align: center;
+  color: white;
+  font-weight: 700;
 }
 
 .input.inline label {
@@ -136,7 +206,10 @@ export default {
   width: 100%;
   padding: 6px 12px;
   box-sizing: border-box;
-  border: 1px solid #ccc;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
+  color: white;
 }
 
 .input.inline input {
@@ -146,7 +219,11 @@ export default {
 .input input:focus {
   outline: none;
   border: 1px solid #521751;
-  background-color: #eee;
+  background-color: transparent;
+}
+
+.input input:active {
+  background: transparent;
 }
 
 .input select {
@@ -193,5 +270,24 @@ export default {
   background-color: transparent;
   color: #ccc;
   cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+}
+
+.fa-times-circle {
+  color: red;
+}
+
+.fa-check-circle {
+  color: green;
+}
+
+.far {
+  position: absolute;
+  top: 42px;
+  left: 10px;
 }
 </style>
